@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Murgröna</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="favicon.png" />
+
+    <!-- Kritisk CSS -->
+    <style>
+      /* Inline kritisk CSS */
+      body {
+        font-family: "Helvetica";
+        color: #1d1d1bff;
+        background-color: #ffffff;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+      }
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        background-color: rgba(255, 255, 255, 0);
+        transition: background-color 0.3s ease-in-out;
+      }
+      .navbar.scrolled {
+        background-color: rgba(255, 255, 255, 1);
+      }
+      .logo img {
+        height: 50px;
+        transition: all 0.3s ease-in-out;
+      }
+      .nav-menu {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        flex-grow: 1;
+        justify-content: center;
+      }
+      .nav-menu li {
+        margin-right: 20px;
+      }
+      .nav-menu li a {
+        text-decoration: none;
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: 300;
+      }
+      .nav-button.right {
+        background-color: #1d1d1bff;
+        border: 2px solid #1d1d1bff;
+        color: #ffffff;
+        padding: 10px 20px;
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: normal;
+        border-radius: 25px;
+        transition: background-color 0.3s, color 0.3s, border 0.3s;
+        margin-right: 20px; /* Ökad marginal till höger i desktopläge */
+      }
+      .nav-button.right:hover {
+        background-color: #ffffff;
+        color: #1d1d1bff;
+        border: 2px solid #1d1d1bff;
+      }
+      .menu-icon {
+        display: none;
+        cursor: pointer;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .menu-icon .bar {
+        width: 25px;
+        height: 3px;
+        background-color: #1d1d1bff;
+        border-radius: 2px;
+      }
+      .hero {
+        height: 100vh;
+        background: url("hero-background.jpg") no-repeat center center/cover;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+      }
+      .hero-text {
+        position: relative;
+        text-align: center;
+        z-index: 2;
+      }
+      .hero-text h1 {
+        font-size: 48px;
+        margin-bottom: 40px;
+        font-weight: bold;
+        color: #ffffff;
+      }
+      .hero-button {
+        background-color: #1d1d1bff;
+        border: 2px solid #1d1d1bff;
+        color: #ffffff;
+        padding: 10px 20px;
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: normal;
+        border-radius: 25px;
+        transition: background-color 0.3s, color 0.3s, border 0.3s;
+      }
+      .hero-button:hover {
+        background-color: #ffffff;
+        color: #1d1d1bff;
+        border: 2px solid #1d1d1bff;
+      }
+    </style>
+
+    <!-- HomeQ Widget CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://widgets.homeq.se/widgets/overview.css"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="top"></div>
+    <!-- Navigation Bar -->
+    <header>
+      <nav class="navbar">
+        <a href="#top" class="logo" id="scroll-to-top">
+          <img src="logo.png" alt="Murgröna logo" id="navbar-logo" />
+        </a>
+        <div class="menu-icon" id="menu-icon">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+        <ul class="nav-menu">
+          <li><a href="#sok-ledigt">SÖK LEDIGT</a></li>
+          <li><a href="#vara-fastigheter">VÅRA FASTIGHETER</a></li>
+          <li><a href="#kundservice">KUNDSERVICE</a></li>
+          <li><a href="#om-murgrona">OM MURGRÖNA</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+      <span class="close-menu" id="close-menu">&times;</span>
+      <ul>
+        <li><a href="#sok-ledigt">SÖK LEDIGT</a></li>
+        <li><a href="#vara-fastigheter">VÅRA FASTIGHETER</a></li>
+        <li><a href="#kundservice">KUNDSERVICE</a></li>
+        <li><a href="#om-murgrona">OM MURGRÖNA</a></li>
+      </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-text">
+        <h1>Välkommen till Murgröna</h1>
+        <a
+          href="mailto:intresse@murgrona.se?subject=Intresseanmälan för bostad&body=Vilken%20typ%20av%20lägenhet%20önskar du?%0A%0AAntal%20rum%20och%20kök%20(intervall):%0AStad:%0AOmråde:%0AMaxhyra%20per%20månad:"
+          class="hero-button"
+          >Ställ dig i vår bostadskö</a
+        >
+      </div>
+    </section>
+
+    <!-- White Section -->
+    <section id="sok-ledigt" class="white-section">
+      <div class="white-content">
+        <h2>Sök lediga lägenheter</h2>
+        <p>
+          Vill du bo i en av våra centralt belägna och välplanerade lägenheter?
+          Här hittar du alla våra tillgängliga lägenheter just nu. Nya
+          lägenheter läggs upp kontinuerligt, så håll utkik regelbundet!
+        </p>
+        <p>
+          Du kan också prenumerera på uppdateringar om lediga lägenheter. Då får
+          du ett mejl direkt när en bostad som matchar dina önskemål blir
+          tillgänglig.
+        </p>
+        <a
+          href="mailto:intresse@murgrona.se?subject=Intresseanmälan för bostad&body=Vilken%20typ%20av%20lägenhet%20önskar du?%0A%0AAntal%20rum%20och%20kök%20(intervall):%0AStad:%0AOmråde:%0AMaxhyra%20per%20månad:"
+          class="cta-button"
+          >Ställ dig i vår bostadskö</a
+        >
+        <!-- HomeQ Widget -->
+        <div id="homeq-anchor" data-company="791"></div>
+      </div>
+    </section>
+
+    <!-- First Image Section -->
+    <section class="image-section" id="image-section-1"></section>
+
+    <!-- Våra Fastigheter Section -->
+    <section id="vara-fastigheter" class="properties-section">
+      <div class="properties-content">
+        <h2>Våra fastigheter</h2>
+        <p>
+          Vi förvaltar för närvarande 7 fastigheter med totalt 121 lägenheter
+          fördelat på Karlstad och Norrköping.
+        </p>
+        <div class="properties-gallery">
+          <div class="property-item">
+            <picture>
+              <source srcset="Polluxgatan 5_Pollux 7.webp" type="image/webp" />
+              <img
+                src="Polluxgatan 5_Pollux 7.jpg"
+                alt="Polluxgatan 5, Karlstad Pollux 7"
+                loading="lazy"
+              />
+            </picture>
+            <p>Polluxgatan 5, 654 55 Karlstad | Karlstad Pollux 7</p>
+          </div>
+
+          <div class="property-item">
+            <picture>
+              <source
+                srcset="Norra Allén 14_Borgmästaren 1.webp"
+                type="image/webp"
+              />
+              <img
+                src="Norra Allén 14_Borgmästaren 1.jpg"
+                alt="Norra Allén 14, Karlstad Borgmästaren 1"
+                loading="lazy"
+              />
+            </picture>
+            <p>Norra Allén 14, 654 61 Karlstad | Karlstad Borgmästaren 1</p>
+          </div>
+
+          <div class="property-item">
+            <picture>
+              <source
+                srcset="Skolvägen 7_Fjärdingsmannen 7.webp"
+                type="image/webp"
+              />
+              <img
+                src="Skolvägen 7_Fjärdingsmannen 7.jpg"
+                alt="Skolvägen 7, Karlstad Fjärdingsmannen 7"
+                loading="lazy"
+              />
+            </picture>
+            <p>Skolvägen 7, 654 62 Karlstad | Karlstad Fjärdingsmannen 7</p>
+          </div>
+
+          <div class="property-item">
+            <picture>
+              <source srcset="Torparegatan 5_Tjuren 7.webp" type="image/webp" />
+              <img
+                src="Torparegatan 5_Tjuren 7.jpg"
+                alt="Torparegatan 5, Karlstad Tjuren 7"
+                loading="lazy"
+              />
+            </picture>
+            <p>Torparegatan 5, 652 21 Karlstad | Karlstad Tjuren 7</p>
+          </div>
+
+          <div class="property-item">
+            <picture>
+              <source
+                srcset="Smedjegatan 45, 47,49,49B_Norrköping Planket 18.webp"
+                type="image/webp"
+              />
+              <img
+                src="Smedjegatan 45, 47,49,49B_Norrköping Planket 18.jpg"
+                alt="Smedjegatan 45, 47,49,49B, Norrköping Planket 18"
+                loading="lazy"
+              />
+            </picture>
+            <p>
+              Smedjegatan 45, 47, 49, 49B, 602 19 Norrköping | Norrköping
+              Planket 18
+            </p>
+          </div>
+
+          <div class="property-item">
+            <picture>
+              <source
+                srcset="Bråddgatan 56_Norrköping Planket 19.webp"
+                type="image/webp"
+              />
+              <img
+                src="Bråddgatan 56_Norrköping Planket 19.jpg"
+                alt="Bråddgatan 56, Norrköping Planket 19"
+                loading="lazy"
+              />
+            </picture>
+            <p>
+              Bråddgatan 56, 602 20 Norrköping, 652 22 Karlstad | Norrköping
+              Planket 19
+            </p>
+          </div>
+
+          <div class="property-item">
+            <picture>
+              <source
+                srcset="Vattengatan 36_Norrköping Karbinen 24.webp"
+                type="image/webp"
+              />
+              <img
+                src="Vattengatan 36_Norrköping Karbinen 24.jpg"
+                alt="Vattengatan 36, Norrköping Karbinen 24"
+                loading="lazy"
+              />
+            </picture>
+            <p>Vattengatan 36, 602 20 Norrköping | Norrköping Karbinen 24</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Second Image Section -->
+    <section class="image-section" id="image-section-2"></section>
+
+    <!-- Kundservice Section -->
+    <section id="kundservice" class="service-section">
+      <div class="service-content">
+        <h2>Kundservice</h2>
+        <h3>Felanmälan & jour</h3>
+        <p>
+          För att göra en felanmälan vänligen maila oss på
+          <a href="mailto:kontakt@murgrona.se" class="no-style-phone"
+            >kontakt@murgrona.se</a
+          >. Beskriv felet så utförligt som möjligt och bifoga gärna en bild.
+        </p>
+        <p>
+          Om det inträffar något akut i din lägenhet eller fastigheten efter
+          kontorstid, t.ex på helgen kontaktar du jouren på telefonnummer
+          <a href="tel:054144070" class="no-style-phone">054-144 070</a>
+          (Karlstad) eller
+          <a href="tel:0771330300" class="no-style-phone">0771-33 03 00</a>
+          (Norrköping).
+        </p>
+        <h3>Hyresgästhandbok</h3>
+        <p>
+          Ladda ner
+          <a
+            href="Hyresgasthandbok_Karlstad.pdf"
+            target="_blank"
+            class="no-style-phone"
+            >Hyresgästhandboken (Karlstad)</a
+          >
+          eller
+          <a
+            href="Hyresgasthandbok_Norrkoping.pdf"
+            target="_blank"
+            class="no-style-phone"
+            >Hyresgästhandboken (Norrköping)</a
+          >
+          som innehåller all viktig information om inflytt, ditt boende, och
+          utflytt.
+        </p>
+        <h3>Kontakt</h3>
+        <p>
+          Har du frågor eller funderingar? Vår kundservice är här för att hjälpa
+          dig. Kontakta oss gärna via e-post på
+          <a href="mailto:kontakt@murgrona.se" class="no-style-phone"
+            >kontakt@murgrona.se</a
+          >.
+        </p>
+      </div>
+    </section>
+
+    <!-- Third Image Section -->
+    <section class="image-section" id="image-section-3"></section>
+
+    <!-- Om Murgröna Section -->
+    <section id="om-murgrona" class="about-section">
+      <div class="about-content">
+        <h2>Om Murgröna</h2>
+        <p>
+          Murgröna är ett fastighetsbolag med fokus på långsiktigt ägande och
+          förvaltning av hyreslägenheter. Vi erbjuder bostäder i Karlstad och
+          Norrköping. Målet är att bedriva en förvaltning som fokuserar på
+          hållbarhet och trivsam boendemiljö.
+        </p>
+      </div>
+      <div class="about-image"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-left">
+          <img src="logo.png" alt="Murgröna logo" class="footer-logo-img" />
+          <p>Gyllenstiernsgatan 19 lgh 1204<br />115 26 Stockholm</p>
+          <p>
+            <a href="mailto:kontakt@murgrona.se">kontakt@murgrona.se</a>
+          </p>
+        </div>
+        <div class="footer-middle">
+          <h2>Meny</h2>
+          <ul>
+            <li><a href="#sok-ledigt">Sök ledigt</a></li>
+            <li><a href="#vara-fastigheter">Våra fastigheter</a></li>
+            <li><a href="#kundservice">Kundservice</a></li>
+            <li><a href="#om-murgrona">Om Murgröna</a></li>
+          </ul>
+        </div>
+        <div class="footer-right">
+          <ul>
+            <li>Journummer</li>
+            <li>
+              <a href="tel:054144070" class="no-style-phone"
+                >054-144 070 (Karlstad)</a
+              >
+            </li>
+            <li>
+              <a href="tel:0771330300" class="no-style-phone"
+                >0771-33 03 00 (Norrköping)</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Murgröna, alla rättigheter förbehållna.</p>
+      </div>
+    </footer>
+
+    <!-- HomeQ Widget JS -->
+    <script
+      type="application/javascript"
+      src="https://widgets.homeq.se/widgets/overview.js"
+    ></script>
+
+    <!-- JavaScript for Mobile Menu and Scroll-to-Top -->
+    <script async>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Om hash-värdet inte är "#top", omdirigera till toppen
+        if (window.location.hash !== "#top") {
+          window.location.hash = "#top";
+        }
+
+        // Klick för att scrolla till toppen
+        document
+          .getElementById("scroll-to-top")
+          .addEventListener("click", function (e) {
+            e.preventDefault();
+            document.getElementById("top").scrollIntoView({
+              behavior: "smooth",
+            });
+          });
+
+        // Din övriga JavaScript-kod, som för den mobila menyn och navbar-scroll-effekten
+        const menuIcon = document.getElementById("menu-icon");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const closeMenu = document.getElementById("close-menu");
+        const navLinks = document.querySelectorAll(".mobile-menu ul li a");
+        const navbarLogo = document.getElementById("navbar-logo");
+
+        menuIcon.addEventListener("click", () => {
+          mobileMenu.classList.add("active");
+        });
+
+        closeMenu.addEventListener("click", () => {
+          mobileMenu.classList.remove("active");
+        });
+
+        navLinks.forEach((link) => {
+          link.addEventListener("click", () => {
+            mobileMenu.classList.remove("active");
+          });
+        });
+
+        window.addEventListener("scroll", function () {
+          const navbar = document.querySelector(".navbar");
+          const whiteSection = document.querySelector(".white-section");
+          const whiteSectionPosition = whiteSection.getBoundingClientRect().top;
+
+          if (window.scrollY >= whiteSectionPosition) {
+            navbar.classList.add("scrolled");
+            navbarLogo.src = "logo 2.png"; // Change to "logo-2.jpg"
+            document
+              .querySelectorAll(".nav-menu li a")
+              .forEach(function (item) {
+                item.style.color = "#1d1d1bff";
+              });
+          } else {
+            navbar.classList.remove("scrolled");
+            navbarLogo.src = "logo.png"; // Revert to original logo
+            document
+              .querySelectorAll(".nav-menu li a")
+              .forEach(function (item) {
+                item.style.color = "#FFFFFF";
+              });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
